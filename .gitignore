@@ -1,2 +1,4 @@
-private/data
+private/data/clips/*
+private/data/original_clips/*
+private/data/thumbnails/*
 private/config/config.local.php

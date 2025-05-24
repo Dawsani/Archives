@@ -6,15 +6,6 @@
     //exit('You are not whitelisted on this site! DM me your IP so get access.<br>Your IP is: ' . $userIp);
 //}
 
-require 'scripts/load-config.php';
-
-$configs = load_config(); 
-
-$host = $configs['dbhost'];
-$username = $configs['dbuser'];
-$user_pass = $configs['dbpassword'];
-$database_in_use = $configs['dbname'];
-
 session_start();
 
 $currentFile = $_SERVER['SCRIPT_NAME'];
@@ -35,6 +26,14 @@ else {
         }
     }
 }
+
+require $_SERVER['DOCUMENT_ROOT'] . '/../private/scripts/load-config.php';
+$configs = load_config(); 
+
+$host = $configs['dbhost'];
+$username = $configs['dbuser'];
+$user_pass = $configs['dbpassword'];
+$database_in_use = $configs['dbname'];
 
 $mysqli = new mysqli($host, $username, $user_pass, $database_in_use);
 

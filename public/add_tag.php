@@ -1,5 +1,5 @@
 <?php
-include 'db_connection.php';
+require $_SERVER["DOCUMENT_ROOT"] . '/scripts/db_connection.php';
 
 $clip_id = $_POST['clip_id'];
 

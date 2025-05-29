@@ -1,6 +1,7 @@
 <?php
-    require $_SERVER['DOCUMENT_ROOT'] . '/db_connection.php';
-
+    require $_SERVER['DOCUMENT_ROOT'] . '/scripts/check_logged_in.php';
+    require $_SERVER['DOCUMENT_ROOT'] . '/../private/scripts/load-config.php';
+    
     $config = load_config();
 
     $baseDir = realpath($config['datadirectory']); // Canonical path

@@ -1,5 +1,6 @@
 <?php
-include 'db_connection.php';
+require $_SERVER["DOCUMENT_ROOT"] . '/scripts/check_logged_in.php';
+require $_SERVER["DOCUMENT_ROOT"] . '/scripts/db_connection.php';
 ?>
 
 <!DOCTYPE html>
@@ -91,16 +92,26 @@ include 'db_connection.php';
   if ($result->num_rows > 0) {
 	  while ($row = $result->fetch_assoc()) {
 
-      		echo "<div class='video-card'>
-              <b>" . $row["title"] . "</b> " . $row["name"] . " " . $row["post_date"] . "<br>
-              <img id='thumbnail-" . $row["cid"] . "' src='scripts/load-data.php?src=thumbnails/" . $row["title"] . ".jpg' onclick=\"toggleVideo('" . $row['cid'] . "', '" . $row['title'] . "')\">
-              <video id='video-player-" . $row["cid"] . "' controls style='display: none;'>
-                <!-- Initially, no source is specified -->
-              </video>
-              <br>
-              <button onclick=\"window.location.href = 'edit_clip_data.php?clip_id=" . $row['cid'] . "';\">Add tag</button>
-              <button onclick=\"window.location.href = 'share_clip.php?clip_id=" . $row['cid'] . "'\">Share</button><br><br>
-            </div>";
+      $videoCard =  
+        <<<HTML
+        <div class='video-card'>
+          <b>{$row["title"]}</b>{$row["name"]} {$row["post_date"]}<br>
+          <img 
+            id='thumbnail-{$row["cid"]}' 
+            src='scripts/load-data.php?src=thumbnails/{$row["title"]}.jpg' 
+            onclick="toggleVideo({$row['cid']}, '{$row['title']}')">
+          <video 
+            id='video-player-{$row["cid"]}'
+            controls style='display: none;'
+          >
+            <!-- Initially, no source is specified -->
+          </video><br>
+          <button onclick="window.location.href = 'edit_clip_data.php?clip_id={$row['cid']}';\">Add tag</button>
+          <button onclick="window.location.href = 'share_clip.php?clip_id={$row['cid']}'\">Share</button><br><br>
+        </div>
+        HTML;
+
+        echo $videoCard;
     }
   } else {
     echo "0 results";

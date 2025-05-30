@@ -39,7 +39,7 @@
         <button type="submit">Log In</button>
 
         <footer>Not a member yet? <a href="register.php">Sign Up</a></footer>
-        <footer><a href="password-reset/forgot_password.php">Forgot Password</a></footer>
+        <footer><a href="/forgot_password.php">Forgot Password</a></footer>
 
     </form>
 </main>

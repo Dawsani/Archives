@@ -11,4 +11,4 @@ ALTER TABLE user ADD UNIQUE (email);
 
 SELECT user_id
 FROM password_reset
-WHERE expire < NOW()
+WHERE expire > NOW();

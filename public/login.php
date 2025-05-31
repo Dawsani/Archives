@@ -1,70 +1,14 @@
-<?php
-include 'db_connection.php'
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <title>The Archives</title>
+    <link rel="stylesheet" href="styles.css" />
     <style>
-        body {
-            background-color: #333; /* Darker background color for the page */
-            color: #fff; /* Light text color */
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 20px;
-        }
-
-        main {
-            background-color: #222; /* Darker background color for the form */
-            border-radius: 10px;
-            padding: 20px;
-            width: 300px;
-            margin: 0 auto;
-        }
-
-        h1 {
-            color: #fff; /* Light text color for header */
-        }
-
         label {
             display: block;
             color: #fff;
             text-align: left;
             margin-top: 10px;
-        }
-
-        input {
-            width: 100%;
-            padding: 10px;
-            border: none;
-            margin: 5px 0;
-            border-radius: 5px;
-            box-sizing: border-box; /* Include padding and border in width and height */
-        }
-
-        .checkbox-container {
-            display: flex;
-            align-items: center;
-        }
-
-        .checkbox-label {
-            color: #fff;
-            margin-left: 10px; /* Add some spacing between checkbox and text */
-        }
-
-        .checkbox-label input {
-            margin-right: 5px; /* Add spacing between checkbox and text */
-        }
-
-        button {
-            background-color: #FF4500; /* Fiery orange-red button background color */
-            color: #fff; /* Light text color for buttons */
-            padding: 10px;
-            border: none;
-            cursor: pointer;
-            margin: 10px 0;
-            border-radius: 5px;
         }
 
         footer {
@@ -88,16 +32,15 @@ include 'db_connection.php'
             <input type="password" name="password" id="password" required>
         </div>
 
-        <div class="checkbox-container">
-            <label class="checkbox-label">
-                <input type="checkbox" id="remember_me" name="remember_me" value="1">
-                Recuerda Me (Por 30 dias)
-            </label>
-        </div>
+
+        <input type="checkbox" id="remember_me" name="remember_me" value="1">Remember Me</input><br>
+
 
         <button type="submit">Log In</button>
 
-        <footer>Not a member yet? Cringe. Hop on: <a href="register.php">Sign Up</a></footer>
+        <footer>Not a member yet? <a href="register.php">Sign Up</a></footer>
+        <footer><a href="/reset_password.php">Forgot Password</a></footer>
+
     </form>
 </main>
 </body>
@@ -106,6 +49,9 @@ include 'db_connection.php'
 
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    require $_SERVER["DOCUMENT_ROOT"] . '/scripts/db_connection.php';
+
     // Retrieve data from the form
     $email = $_POST["email"];
     $password = $_POST["password"];
@@ -134,11 +80,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // make sure the user is approved
     $sql = "SELECT is_approved FROM user WHERE email = '$email';";
     $result = $mysqli->query($sql);
+
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         $approved = $row["is_approved"];
         if ($approved == 1) {
+
             // Create the session, get them to index
+            session_start();
             $_SESSION['username'] = $username;
 
             // Check if they checked remember me
@@ -151,7 +100,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             Header("Location: .");
         }
         else {
-            exit("Your account is set up but not yet approved by D-Dawg. DM me with your username or email and I'll approve you when I can.<br>");
+            exit("Your account is set up but not yet approved by Dawson. DM me with your username or email and I'll approve you when I can.<br>");
         }
     }
 }

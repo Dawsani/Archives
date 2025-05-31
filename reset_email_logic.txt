@@ -1,0 +1,11 @@
+starts on email input
+input email
+send email ONCE (not on refresh)
+show token input
+input token
+verify input token with email (can happen on refresh)
+show password input only if verification worked
+input password
+post and change password ONCE
+verify password meets requirements
+show password changed succesfully

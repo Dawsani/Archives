@@ -1,6 +1,6 @@
 <?php
 // Connect to mySQL
-include 'db_connection.php';
+require $_SERVER["DOCUMENT_ROOT"] . '/scripts/db_connection.php';
 
 // Function to generate a thumbnail using FFmpeg
 function generateThumbnail($inputVideo, $outputThumbnail) {

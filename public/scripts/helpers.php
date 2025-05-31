@@ -2,13 +2,16 @@
 require $_SERVER['DOCUMENT_ROOT'] . '/../private/scripts/load-config.php';
 
 function verify_password_reset_token($email, $token) {
+
+	$errors = array();
+
 	$mysqli = db_connect();
 
 	// check if the token and email are valid
 	$stmt = $mysqli->prepare("  SELECT user_id, code
 								FROM password_reset
-								WHERE code = ? AND expire > NOW()");
-	$stmt->bind_param("s", $token);
+								WHERE expire > NOW()
+								ORDER BY expire DESC");
 	$stmt->execute();
 
 	// Get the result
@@ -17,18 +20,25 @@ function verify_password_reset_token($email, $token) {
 	// get userId 
 	$userId = userEmailToId($mysqli, $email);
 
-	// see if the proviced code exists
+	// see if the provided code exists
 	if ($result->num_rows === 0) {
-		return FALSE;
+		$errors[] = "Invalid code.";
+		return $errors;
 	}
 
 	// make sure the code is tied to the input email
 	$row = $result->fetch_assoc();
 	if ($row["user_id"] != $userId) {
-		return FALSE;
+		$errors[] = "Invalid code.";
+		return $errors;
 	}
 
-	return TRUE;
+	if ($row["code"] != $token) {
+		$errors[] = "Invalid code.";
+		return $errors;
+	}
+
+	return $errors;
 }
 
 function db_connect() {
